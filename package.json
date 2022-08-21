@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "UI tests for localcoding.us",
   "scripts": {
-    "cy:open": "npx cypress open"
+    "cy:open": "npx cypress open",
+    "cy:run": "npx cypress run"
   },
   "keywords": [],
   "author": "Arzu Aghayeva",
