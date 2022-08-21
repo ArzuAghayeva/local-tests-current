@@ -1,4 +1,7 @@
 describe('Authentication', () => {
+    beforeEach(() => {
+        cy.visit('/user/login')
+    })
 
     // Pre-conditions:
     // Sign in page is open
@@ -12,8 +15,6 @@ describe('Authentication', () => {
     // 1. User icon is visible
     // 2. Current URL contains "/profile/"
     it('Sign in with valid credentials', () => {
-        cy.visit('/user/login')
-
         cy.get('#normal_login_email')
             .type('busy@owner.com')
 
@@ -26,8 +27,6 @@ describe('Authentication', () => {
             .should('be.visible')
         cy.location('pathname')
             .should("include", 'profile')
-
-
     })
 
     // Pre-conditions:
@@ -41,8 +40,6 @@ describe('Authentication', () => {
     // Execution results:
     //"Auth failed" message/toast is visible
     it('Sign in with invalid credentials', () => {
-        cy.visit('/user/login')
-
         cy.get('#normal_login_email')
             .type('busy@owner.com')
 
@@ -69,9 +66,6 @@ describe('Authentication', () => {
     // ER: "Required" validation message displayed
 
     it('Credentials validation', () => {
-
-        cy.visit('/user/login')
-
         cy.get('#normal_login_email')
             .type('busy')
 
