@@ -1,4 +1,4 @@
-before( () => {
+before(() => {
     cy.request(
         'POST',
         `${Cypress.env('API_BASE_URL')}/user/login`,
