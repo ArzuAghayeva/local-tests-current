@@ -16,10 +16,10 @@ describe('Authentication', () => {
     // 2. Current URL contains "/profile/"
     it('Sign in with valid credentials', () => {
         cy.get('#normal_login_email')
-            .type('busy@owner.com')
+            .type(Cypress.env('EMAIL'))
 
         cy.get('#normal_login_password')
-            .type('123123')
+            .type(Cypress.env('PASSWORD'))
         cy.get('.login-form-button')
             .click()
 
@@ -41,7 +41,7 @@ describe('Authentication', () => {
     //"Auth failed" message/toast is visible
     it('Sign in with invalid credentials', () => {
         cy.get('#normal_login_email')
-            .type('busy@owner.com')
+            .type(Cypress.env('EMAIL'))
 
         cy.get('#normal_login_password')
             .type('wrong')

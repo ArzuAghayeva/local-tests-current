@@ -14,14 +14,11 @@
 // 1. %TIMESTAMP% is visible in the report
 describe('Profile', () => {
     beforeEach(() => {
-        cy.visit('/user/login')
-        cy.get('#normal_login_email')
-            .type('busy@owner.com')
-
-        cy.get('#normal_login_password')
-            .type('123123')
-        cy.get('.login-form-button')
-            .click()
+        cy.visit('/')
+        window.localStorage.setItem('token', Cypress.env('TOKEN'))
+        window.localStorage.setItem('userID', Cypress.env('USER_ID'))
+        window.localStorage.setItem('lang', 'ru')
+        cy.visit(`/profile/${Cypress.env('USER_ID')}`)
         })
 
     it('Daily report creation', () => {
