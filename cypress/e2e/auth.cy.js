@@ -1,6 +1,10 @@
+import LoginPage from '../pages/login.page'
+import ProfilePage from '../pages/profile.page'
+
+
 describe('Authentication', () => {
     beforeEach(() => {
-        cy.visit('/user/login')
+        LoginPage.open()
     })
 
     // Pre-conditions:
@@ -15,18 +19,11 @@ describe('Authentication', () => {
     // 1. User icon is visible
     // 2. Current URL contains "/profile/"
     it('Sign in with valid credentials', () => {
-        cy.get('#normal_login_email')
-            .type(Cypress.env('EMAIL'))
+        LoginPage.login(Cypress.env('EMAIL'), Cypress.env('PASSWORD'))
 
-        cy.get('#normal_login_password')
-            .type(Cypress.env('PASSWORD'))
-        cy.get('.login-form-button')
-            .click()
-
-        cy.get('.ant-avatar-square')
-            .should('be.visible')
+        ProfilePage.iconAvatar.should('be.visible')
         cy.location('pathname')
-            .should("include", 'profile')
+            .should('include', 'profile')
     })
 
     // Pre-conditions:
@@ -40,17 +37,8 @@ describe('Authentication', () => {
     // Execution results:
     //"Auth failed" message/toast is visible
     it('Sign in with invalid credentials', () => {
-        cy.get('#normal_login_email')
-            .type(Cypress.env('EMAIL'))
-
-        cy.get('#normal_login_password')
-            .type('wrong')
-
-        cy.get('.login-form-button')
-            .click()
-
-        cy.get('.ant-notification-notice-message')
-            .should('have.text', 'Auth failed')
+        LoginPage.login(Cypress.env('EMAIL'), 'wrong')
+        LoginPage.toast.should('have.text', 'Auth failed')
     })
 
     // Pre-conditions:
@@ -66,31 +54,20 @@ describe('Authentication', () => {
     // ER: "Required" validation message displayed
 
     it('Credentials validation', () => {
-        cy.get('#normal_login_email')
-            .type('busy')
-
-        cy.xpath('//div[contains(@class, "ant-form-item-has-error")][.//input[@id="normal_login_email"]]//div[@class="ant-form-item-explain-error"]')
+        LoginPage.inputEmail.type('test')
+        LoginPage.emailValidation
             .should('have.text', '\'email\' is not a valid email')
 
-        cy.get('#normal_login_email')
-            .clear()
+        LoginPage.inputEmail.clear()
 
-        cy.xpath('//div[contains(@class, "ant-form-item-has-error")][.//input[@id="normal_login_email"]]//div[@class="ant-form-item-explain-error"]')
+        LoginPage.emailValidation
             .should('have.text', 'Required')
 
-        cy.get('#normal_login_password')
+        LoginPage.inputPassword
             .type('wrong')
             .clear()
 
-        cy.xpath('//div[contains(@class, "ant-form-item-has-error")][.//input[@id="normal_login_password"]]//div[@class="ant-form-item-explain-error"]')
+        LoginPage.passwordValidation
             .should('have.text', 'Required')
-
-
-        // Metod Bonda by Dusty:
-        // cy.get('#normal_login_email')
-        //     .parents('.ant-col.ant-form-item-control')
-        //     .find('.ant-form-item-explain-error')
-        //     .should('have.text', 'Required')
-
     } )
 })
